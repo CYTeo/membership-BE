@@ -1,0 +1,12 @@
+{
+  "name": "membership-BE",
+  "version": "1.0.0",
+  "description": "membership-backend",
+  "main": "index.js",
+  "repository": "https://github.com/CYTeo/membership-BE.git",
+  "author": "CYTeo <86589539+CYTeo@users.noreply.github.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
