@@ -1,5 +1,6 @@
-import express from "express";
+import express,{Response, Request} from "express";
 import { connectDB } from "./database";
+import userRouter from "./modules/user/user.route";
 
 require("dotenv").config();
 
@@ -10,9 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDB();
 
-// app.get("/", (_req: Request, res: Response) => {
-//   return res.send("Hello world");
-// });
+// init the routes
+app.use("/users", userRouter);
+
 // app.use("/users", userRouter);
 // app.use("/invoices", invoiceRouter);
 

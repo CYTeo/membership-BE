@@ -1,9 +1,9 @@
-import User from './user.model';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-require('dotenv').config();
+import User from "./user.model";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+require("dotenv").config();
 
-const SECRET_KEY = 'CREDENTIALS_KEY';
+const SECRET_KEY = "CREDENTIALS_KEY";
 
 type UserDetails = {
   username: String;
@@ -11,9 +11,13 @@ type UserDetails = {
   password: String;
 };
 
+export const testing = async (req: any, res: any) => {
+  res.send("This is testing response. ");
+};
+
 export const signup = async (req: any, res: any) => {
   const { username, email, password } = req.body;
-  console.log('req.body in signup', req.body);
+  console.log("req.body in signup", req.body);
 
   // const SECRET_KEY = 'CREDENTIALS_KEY';
 
@@ -21,7 +25,7 @@ export const signup = async (req: any, res: any) => {
     // check if the user existing in the system
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User Already exists' });
+      return res.status(400).json({ message: "User already exists" });
     }
 
     // hash the password
@@ -37,19 +41,19 @@ export const signup = async (req: any, res: any) => {
     // generate the token
     // const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY);
 
-    const token = jwt.sign(
-      { email: result.email, id: result._id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      }
-    );
+    // const token = jwt.sign(
+    //   { email: result.email, id: result._id },
+    //   process.env.JWT_SECRET,
+    //   {
+    //     expiresIn: process.env.JWT_EXPIRES_IN,
+    //   }
+    // );
 
-    res.status(201).json({ user: result, token: token });
+    // res.status(201).json({ user: result, token: token });
 
     // res.send("Sign up");
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: "Something went wrong." });
     // res.send("error.message");
   }
 };
@@ -61,7 +65,7 @@ export const signin = async (req: any, res: any) => {
     // check if the user existed in the system
     const userFound = await User.findOne({ email: email });
     if (!userFound) {
-      return res.status(200).json({ message: 'User not found' });
+      return res.status(200).json({ message: "User not found" });
     }
 
     // match the password between input and system
@@ -69,19 +73,19 @@ export const signin = async (req: any, res: any) => {
 
     // password not matched and return invalid message
     if (!matchPassword) {
-      return res.status(200).json({ message: 'Invalid Credentials' });
+      return res.status(200).json({ message: "Invalid Credentials" });
     }
 
     // create token
-    const token = jwt.sign(
-      { email: userFound.email, id: userFound._id },
-      SECRET_KEY
-    );
-    res.status(201).json({ user: userFound, token: token });
+    // const token = jwt.sign(
+    //   { email: userFound.email, id: userFound._id },
+    //   SECRET_KEY
+    // );
+    // res.status(201).json({ user: userFound, token: token });
 
     // res.send("Sign in");
   } catch (errer) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: "Something went wrong." });
   }
 };
 
@@ -96,21 +100,22 @@ export const getUserByEmail = async (req: any, res: any) => {
       __v: 0,
     });
     if (!userFound) {
-      return res.status(403).json({ message: 'User not found' });
+      return res.status(403).json({ message: "User not found" });
     }
     jwt.verify(token, SECRET_KEY, (err: any, decoded: any) => {
       if (err) {
-        console.error('Token verification failed:', err.message);
-        res.status(403).json({ message: 'User not found' });
+        console.error("Token verification failed:", err.message);
+        res.status(403).json({ message: "User not found" });
       }
     });
     res.status(200).json({ user: userFound });
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong.' });
+    res.status(500).json({ message: "Something went wrong." });
   }
 };
 
 module.exports = {
+  testing,
   signup,
   signin,
   getUserByEmail,
