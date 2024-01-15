@@ -1,6 +1,7 @@
 import express,{Response, Request} from "express";
 import { connectDB } from "./database";
 import userRouter from "./modules/user/user.route";
+import rewardRouter from "./modules/reward/reward.route";
 
 require("dotenv").config();
 
@@ -13,9 +14,8 @@ connectDB();
 
 // init the routes
 app.use("/users", userRouter);
+app.use("/rewards", rewardRouter);
 
-// app.use("/users", userRouter);
-// app.use("/invoices", invoiceRouter);
 
 app.listen(process.env.PORT, () => {
   console.log("App listening to port ", process.env.PORT);
